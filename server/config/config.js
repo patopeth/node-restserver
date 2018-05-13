@@ -9,6 +9,13 @@ process.env.PORT = process.env.PORT || 8080; //el obj este PORT es porque no sab
 //ENTORNO
 process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
 
+//Vencimiento del token
+process.env.CADUCIDAD_TOKEN = 60 * 60 * 24 * 30;
+// 60 segundos * 60 minutos * 24 horas * 30 dias
+
+//SEED de autenticacion
+process.env.SEED = process.env.SEED || 'este-es-el-seed-desarrollo';
+
 //BASE DE DATOS
 let urlDB;
 

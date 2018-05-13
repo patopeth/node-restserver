@@ -6,7 +6,17 @@ const app = express();
 
 const Usuario = require('../models/usuario');
 
-app.get('/usuario', (req, res) => {
+const { verificaToken, verificarAdminRol } = require('../middlewares/authentication');
+
+//el segundo param es el middleware que se dispara cuando ingresas a esa ruta
+app.get('/usuario', verificaToken, (req, res) => {
+
+
+    // return res.json({
+    //     usuario: req.usuario,
+    //     nombre: req.usuario.nombre,
+    //     email: req.usuario.email
+    // })
 
     let desde = req.query.desde || 0; //los parametros opcionales se meten en Query
     desde = Number(desde);
@@ -39,7 +49,8 @@ app.get('/usuario', (req, res) => {
 
 });
 
-app.post('/usuario', (req, res) => {
+app.post('/usuario', [verificaToken, verificarAdminRol], (req, res) => {
+
     let body = req.body;
 
     let usuario = new Usuario({
@@ -69,7 +80,8 @@ app.post('/usuario', (req, res) => {
 
 });
 
-app.put('/usuario/:id', (req, res) => {
+app.put('/usuario/:id', [verificaToken, verificarAdminRol], (req, res) => {
+
     let id = req.params.id;
     let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado']); //agarra todo el obj y le filtrás solo lo que queres
 
@@ -88,7 +100,7 @@ app.put('/usuario/:id', (req, res) => {
     })
 });
 
-app.delete('/usuario/:id', (req, res) => {
+app.delete('/usuario/:id', [verificaToken, verificarAdminRol], (req, res) => {
 
     let id = req.params.id;
 
